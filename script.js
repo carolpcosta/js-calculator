@@ -5,6 +5,10 @@ const templateText = document.querySelector('#origin-text p')
 
 var myTikTok;
 
+document.addEventListener("copy", (e) => {
+    e.preventDefault();
+});
+
 const control = {
     templateText: templateText.innerText,
     isRunningTiming: false,
@@ -29,7 +33,6 @@ const updateClockTime = (delta) => {
 }
 
 const startTime = () => {
-    console.log('X_keypress');
     if (control.isRunningTiming === false) {
         control.isRunningTiming = true;
 
@@ -37,13 +40,10 @@ const startTime = () => {
             updateClockTime(100);
         }, 100);
     }
-
 }
 
 const checkTyping = () => {
     if (control.isRunningTiming === true) {
-        console.log(testArea.value)
-
         if (control.templateText === testArea.value) {
             control.isRunningTiming = false;
             clearInterval(myTikTok);
@@ -60,6 +60,19 @@ const restart = () => {
 
 }
 
+const blockPaste = () => {
+    document.addEventListener("paste", (e) => {
+        e.preventDefault();
+    });
+    
+    document.addEventListener("keydown", (e) => { 
+        if (e.ctrlkey) { 
+           e.preventDefault();
+        }
+    });
+}
+
 testArea.addEventListener("keypress", startTime);
 testArea.addEventListener("keyup", checkTyping);
+testArea.addEventListener('click', blockPaste);
 resetButton.addEventListener('click', restart)
